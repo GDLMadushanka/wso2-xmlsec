@@ -186,7 +186,10 @@ public abstract class DOMDigestMethod extends DOMStructure
         if (params != null) {
             result = 31 * result + params.hashCode();
         }
-        result = 31 * result + getAlgorithm().hashCode();
+        String algorithm = getAlgorithm();
+        if (algorithm != null) {
+            result = 31 * result + algorithm.hashCode();
+        }
         
         return result;
     }

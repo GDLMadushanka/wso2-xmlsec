@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1662373237790
-Build-Jdk: 1.8.0_332
-Built-By: lahiru
+Bnd-LastModified: 1675923167075
+Build-Jdk: 1.8.0_352
+Built-By: lahirumadu
 Bundle-Description: Apache XML Security for Java supports XML-Signature 
  Syntax and Processing,        W3C Recommendation 12 February 2002, and 
  XML Encryption Syntax and        Processing, W3C Recommendation 10 Dece
@@ -13,94 +13,94 @@ Bundle-ManifestVersion: 2
 Bundle-Name: xmlsec
 Bundle-SymbolicName: org.wso2.santuario.xmlsec
 Bundle-Vendor: The Apache Software Foundation
-Bundle-Version: 1.5.6.wso2v1-SNAPSHOT
+Bundle-Version: 1.5.6.wso2v2-SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
-Export-Package: org.apache.xml.security;version="1.5.6.wso2v1-SNAPSHOT",
- org.apache.xml.security.algorithms;version="1.5.6.wso2v1-SNAPSHOT";uses
+Export-Package: org.apache.xml.security;version="1.5.6.wso2v2-SNAPSHOT",
+ org.apache.xml.security.algorithms;version="1.5.6.wso2v2-SNAPSHOT";uses
  :="org.apache.xml.security.exceptions,org.apache.xml.security.signature
  ,org.apache.xml.security.utils,org.w3c.dom",org.apache.xml.security.alg
- orithms.implementations;version="1.5.6.wso2v1-SNAPSHOT";uses:="org.apac
+ orithms.implementations;version="1.5.6.wso2v2-SNAPSHOT";uses:="org.apac
  he.xml.security.algorithms,org.apache.xml.security.signature,org.w3c.do
- m",org.apache.xml.security.c14n;version="1.5.6.wso2v1-SNAPSHOT";uses:="
+ m",org.apache.xml.security.c14n;version="1.5.6.wso2v2-SNAPSHOT";uses:="
  javax.xml.parsers,org.apache.xml.security.exceptions,org.w3c.dom,org.xm
- l.sax",org.apache.xml.security.c14n.helper;version="1.5.6.wso2v1-SNAPSH
+ l.sax",org.apache.xml.security.c14n.helper;version="1.5.6.wso2v2-SNAPSH
  OT";uses:="org.apache.xml.security.c14n,org.w3c.dom",org.apache.xml.sec
- urity.c14n.implementations;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax
+ urity.c14n.implementations;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax
  .xml.parsers,org.apache.xml.security.c14n,org.apache.xml.security.c14n.
  helper,org.apache.xml.security.signature,org.w3c.dom,org.xml.sax",org.a
- pache.xml.security.encryption;version="1.5.6.wso2v1-SNAPSHOT";uses:="or
- g.apache.xml.security.c14n,org.apache.xml.security.exceptions,org.apach
- e.xml.security.keys,org.apache.xml.security.keys.keyresolver,org.apache
- .xml.security.transforms,org.w3c.dom",org.apache.xml.security.exception
- s;version="1.5.6.wso2v1-SNAPSHOT",org.apache.xml.security.keys;version=
- "1.5.6.wso2v1-SNAPSHOT";uses:="javax.crypto,org.apache.xml.security.enc
- ryption,org.apache.xml.security.exceptions,org.apache.xml.security.keys
- .content,org.apache.xml.security.keys.content.keyvalues,org.apache.xml.
- security.keys.keyresolver,org.apache.xml.security.keys.storage,org.apac
- he.xml.security.transforms,org.apache.xml.security.utils,org.w3c.dom",o
- rg.apache.xml.security.keys.content;version="1.5.6.wso2v1-SNAPSHOT";use
- s:="org.apache.xml.security.exceptions,org.apache.xml.security.keys.con
- tent.keyvalues,org.apache.xml.security.keys.content.x509,org.apache.xml
- .security.transforms,org.apache.xml.security.utils,org.w3c.dom",org.apa
- che.xml.security.keys.content.keyvalues;version="1.5.6.wso2v1-SNAPSHOT"
- ;uses:="org.apache.xml.security.exceptions,org.apache.xml.security.util
- s,org.w3c.dom",org.apache.xml.security.keys.content.x509;version="1.5.6
- .wso2v1-SNAPSHOT";uses:="org.apache.xml.security.exceptions,org.apache.
- xml.security.utils,org.w3c.dom",org.apache.xml.security.keys.keyresolve
- r;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.crypto,org.apache.xml.se
- curity.exceptions,org.apache.xml.security.keys.storage,org.w3c.dom",org
- .apache.xml.security.keys.keyresolver.implementations;version="1.5.6.ws
- o2v1-SNAPSHOT";uses:="javax.crypto,org.apache.xml.security.keys.keyreso
- lver,org.apache.xml.security.keys.storage,org.w3c.dom",org.apache.xml.s
- ecurity.keys.storage;version="1.5.6.wso2v1-SNAPSHOT";uses:="org.apache.
- xml.security.exceptions",org.apache.xml.security.keys.storage.implement
- ations;version="1.5.6.wso2v1-SNAPSHOT";uses:="org.apache.xml.security.k
- eys.storage",org.apache.xml.security.resource;version="1.5.6.wso2v1-SNA
- PSHOT",org.apache.xml.security.resource.schema;version="1.5.6.wso2v1-SN
- APSHOT",org.apache.xml.security.signature;version="1.5.6.wso2v1-SNAPSHO
- T";uses:="javax.crypto,javax.xml.parsers,org.apache.xml.security.algori
- thms,org.apache.xml.security.c14n,org.apache.xml.security.exceptions,or
- g.apache.xml.security.keys,org.apache.xml.security.signature.reference,
- org.apache.xml.security.transforms,org.apache.xml.security.utils,org.ap
- ache.xml.security.utils.resolver,org.w3c.dom,org.xml.sax",org.apache.xm
- l.security.signature.reference;version="1.5.6.wso2v1-SNAPSHOT";uses:="o
- rg.w3c.dom",org.apache.xml.security.transforms;version="1.5.6.wso2v1-SN
- APSHOT";uses:="javax.xml.parsers,org.apache.xml.security.c14n,org.apach
- e.xml.security.exceptions,org.apache.xml.security.signature,org.apache.
- xml.security.utils,org.w3c.dom,org.xml.sax",org.apache.xml.security.tra
- nsforms.implementations;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.xm
- l.transform,org.apache.xml.security.c14n,org.apache.xml.security.signat
- ure,org.apache.xml.security.transforms,org.apache.xpath,org.apache.xpat
- h.functions,org.apache.xpath.objects",org.apache.xml.security.transform
- s.params;version="1.5.6.wso2v1-SNAPSHOT";uses:="org.apache.xml.security
- .exceptions,org.apache.xml.security.transforms,org.apache.xml.security.
- utils,org.w3c.dom",org.apache.xml.security.utils;version="1.5.6.wso2v1-
- SNAPSHOT";uses:="javax.xml.namespace,javax.xml.parsers,javax.xml.transf
+ pache.xml.security.encryption;version="1.5.6.wso2v2-SNAPSHOT";uses:="ja
+ vax.xml.parsers,org.apache.xml.security.c14n,org.apache.xml.security.ex
+ ceptions,org.apache.xml.security.keys,org.apache.xml.security.keys.keyr
+ esolver,org.apache.xml.security.transforms,org.w3c.dom",org.apache.xml.
+ security.exceptions;version="1.5.6.wso2v2-SNAPSHOT",org.apache.xml.secu
+ rity.keys;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.crypto,org.apach
+ e.xml.security.encryption,org.apache.xml.security.exceptions,org.apache
+ .xml.security.keys.content,org.apache.xml.security.keys.content.keyvalu
+ es,org.apache.xml.security.keys.keyresolver,org.apache.xml.security.key
+ s.storage,org.apache.xml.security.transforms,org.apache.xml.security.ut
+ ils,org.w3c.dom",org.apache.xml.security.keys.content;version="1.5.6.ws
+ o2v2-SNAPSHOT";uses:="org.apache.xml.security.exceptions,org.apache.xml
+ .security.keys.content.keyvalues,org.apache.xml.security.keys.content.x
+ 509,org.apache.xml.security.transforms,org.apache.xml.security.utils,or
+ g.w3c.dom",org.apache.xml.security.keys.content.keyvalues;version="1.5.
+ 6.wso2v2-SNAPSHOT";uses:="org.apache.xml.security.exceptions,org.apache
+ .xml.security.utils,org.w3c.dom",org.apache.xml.security.keys.content.x
+ 509;version="1.5.6.wso2v2-SNAPSHOT";uses:="org.apache.xml.security.exce
+ ptions,org.apache.xml.security.utils,org.w3c.dom",org.apache.xml.securi
+ ty.keys.keyresolver;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.crypto
+ ,org.apache.xml.security.exceptions,org.apache.xml.security.keys.storag
+ e,org.w3c.dom",org.apache.xml.security.keys.keyresolver.implementations
+ ;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.crypto,org.apache.xml.sec
+ urity.keys.keyresolver,org.apache.xml.security.keys.storage,org.w3c.dom
+ ",org.apache.xml.security.keys.storage;version="1.5.6.wso2v2-SNAPSHOT";
+ uses:="org.apache.xml.security.exceptions",org.apache.xml.security.keys
+ .storage.implementations;version="1.5.6.wso2v2-SNAPSHOT";uses:="org.apa
+ che.xml.security.keys.storage",org.apache.xml.security.resource;version
+ ="1.5.6.wso2v2-SNAPSHOT",org.apache.xml.security.resource.schema;versio
+ n="1.5.6.wso2v2-SNAPSHOT",org.apache.xml.security.signature;version="1.
+ 5.6.wso2v2-SNAPSHOT";uses:="javax.crypto,javax.xml.parsers,org.apache.x
+ ml.security.algorithms,org.apache.xml.security.c14n,org.apache.xml.secu
+ rity.exceptions,org.apache.xml.security.keys,org.apache.xml.security.si
+ gnature.reference,org.apache.xml.security.transforms,org.apache.xml.sec
+ urity.utils,org.apache.xml.security.utils.resolver,org.w3c.dom,org.xml.
+ sax",org.apache.xml.security.signature.reference;version="1.5.6.wso2v2-
+ SNAPSHOT";uses:="org.w3c.dom",org.apache.xml.security.transforms;versio
+ n="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.parsers,org.apache.xml.secur
+ ity.c14n,org.apache.xml.security.exceptions,org.apache.xml.security.sig
+ nature,org.apache.xml.security.utils,org.w3c.dom,org.xml.sax",org.apach
+ e.xml.security.transforms.implementations;version="1.5.6.wso2v2-SNAPSHO
+ T";uses:="javax.xml.transform,org.apache.xml.security.c14n,org.apache.x
+ ml.security.signature,org.apache.xml.security.transforms,org.apache.xpa
+ th,org.apache.xpath.functions,org.apache.xpath.objects",org.apache.xml.
+ security.transforms.params;version="1.5.6.wso2v2-SNAPSHOT";uses:="org.a
+ pache.xml.security.exceptions,org.apache.xml.security.transforms,org.ap
+ ache.xml.security.utils,org.w3c.dom",org.apache.xml.security.utils;vers
+ ion="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.namespace,javax.xml.transf
  orm,org.apache.commons.logging,org.apache.xml.security.algorithms,org.a
  pache.xml.security.exceptions,org.w3c.dom,org.xml.sax",org.apache.xml.s
- ecurity.utils.resolver;version="1.5.6.wso2v1-SNAPSHOT";uses:="org.apach
+ ecurity.utils.resolver;version="1.5.6.wso2v2-SNAPSHOT";uses:="org.apach
  e.xml.security.exceptions,org.apache.xml.security.signature,org.w3c.dom
  ",org.apache.xml.security.utils.resolver.implementations;version="1.5.6
- .wso2v1-SNAPSHOT";uses:="org.apache.xml.security.signature,org.apache.x
- ml.security.utils.resolver",javax.xml.crypto;version="1.5.6.wso2v1-SNAP
+ .wso2v2-SNAPSHOT";uses:="org.apache.xml.security.signature,org.apache.x
+ ml.security.utils.resolver",javax.xml.crypto;version="1.5.6.wso2v2-SNAP
  SHOT";uses:="javax.xml.crypto.dsig.keyinfo",javax.xml.crypto.dom;versio
- n="1.5.6.wso2v1-SNAPSHOT";uses:="javax.xml.crypto,org.w3c.dom",javax.xm
- l.crypto.dsig;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.xml.crypto,j
+ n="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.crypto,org.w3c.dom",javax.xm
+ l.crypto.dsig;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.crypto,j
  avax.xml.crypto.dsig.keyinfo,javax.xml.crypto.dsig.spec",javax.xml.cryp
- to.dsig.dom;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.xml.crypto,jav
+ to.dsig.dom;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.crypto,jav
  ax.xml.crypto.dom,javax.xml.crypto.dsig,org.w3c.dom",javax.xml.crypto.d
- sig.keyinfo;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.xml.crypto",ja
- vax.xml.crypto.dsig.spec;version="1.5.6.wso2v1-SNAPSHOT";uses:="javax.x
- ml.crypto",org.apache.jcp.xml.dsig.internal;version="1.5.6.wso2v1-SNAPS
+ sig.keyinfo;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.crypto",ja
+ vax.xml.crypto.dsig.spec;version="1.5.6.wso2v2-SNAPSHOT";uses:="javax.x
+ ml.crypto",org.apache.jcp.xml.dsig.internal;version="1.5.6.wso2v2-SNAPS
  HOT";uses:="javax.crypto",org.apache.jcp.xml.dsig.internal.dom;version=
- "1.5.6.wso2v1-SNAPSHOT";uses:="javax.xml.crypto,javax.xml.crypto.dom,ja
+ "1.5.6.wso2v2-SNAPSHOT";uses:="javax.xml.crypto,javax.xml.crypto.dom,ja
  vax.xml.crypto.dsig,javax.xml.crypto.dsig.keyinfo,javax.xml.crypto.dsig
  .spec,org.apache.xml.security.c14n,org.apache.xml.security.signature,or
  g.w3c.dom"
 Implementation-Title: xmlsec
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.wso2.santuario
-Implementation-Version: 1.5.6-wso2v1-SNAPSHOT
+Implementation-Version: 1.5.6-wso2v2-SNAPSHOT
 Import-Package: org.apache.commons.logging;resolution:=optional;version=
  "[1.1,2)",org.apache.xml.dtm;resolution:=optional;version="[2.7,3)",org
  .apache.xml.utils;resolution:=optional;version="[2.7,3)",org.apache.xpa
@@ -116,5 +116,5 @@ Import-Package: org.apache.commons.logging;resolution:=optional;version=
  w3c.dom;resolution:=optional,org.xml.sax;resolution:=optional
 Specification-Title: xmlsec
 Specification-Vendor: The Apache Software Foundation
-Specification-Version: 1.5.6-wso2v1-SNAPSHOT
+Specification-Version: 1.5.6-wso2v2-SNAPSHOT
 Tool: Bnd-2.1.0.20130426-122213

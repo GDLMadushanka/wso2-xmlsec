@@ -105,11 +105,6 @@ public final class DOMSignatureProperties extends DOMStructure
         for (int i = 0; i < length; i++) {
             Node child = nodes.item(i);
             if (child.getNodeType() == Node.ELEMENT_NODE) {
-                String name = child.getLocalName();
-                if (!name.equals("SignatureProperty")) {
-                    throw new MarshalException("Invalid element name: " + name +
-                                               ", expected SignatureProperty");
-                }
                 properties.add(new DOMSignatureProperty((Element)child,
                                                         context));
             }
@@ -173,7 +168,9 @@ public final class DOMSignatureProperties extends DOMStructure
         if (id != null) {
             result = 31 * result + id.hashCode();
         }
-        result = 31 * result + properties.hashCode();
+        if (properties != null) {
+            result = 31 * result + properties.hashCode();
+        }
         
         return result;
     }

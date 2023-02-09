@@ -36,8 +36,6 @@ import org.xml.sax.SAXException;
  */
 public abstract class TransformSpi {
     
-    protected boolean secureValidation;
-    
     /**
      * The mega method which MUST be implemented by the Transformation Algorithm.
      *

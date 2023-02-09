@@ -137,13 +137,11 @@ public final class DOMXMLSignature extends DOMStructure
         id = DOMUtils.getAttributeValue(localSigElem, "Id");
 
         // unmarshal SignedInfo
-        Element siElem = DOMUtils.getFirstChildElement(localSigElem,
-                                                       "SignedInfo");
+        Element siElem = DOMUtils.getFirstChildElement(localSigElem);
         si = new DOMSignedInfo(siElem, context, provider);
 
         // unmarshal SignatureValue 
-        Element sigValElem = DOMUtils.getNextSiblingElement(siElem,
-                                                            "SignatureValue");
+        Element sigValElem = DOMUtils.getNextSiblingElement(siElem);
         sv = new DOMSignatureValue(sigValElem, context);
 
         // unmarshal KeyInfo, if specified
@@ -159,11 +157,6 @@ public final class DOMXMLSignature extends DOMStructure
         } else {
             List<XMLObject> tempObjects = new ArrayList<XMLObject>();
             while (nextSibling != null) {
-                String name = nextSibling.getLocalName();
-                if (!name.equals("Object")) {
-                    throw new MarshalException("Invalid element name: " + name +
-                                               ", expected KeyInfo or Object");
-                }
                 tempObjects.add(new DOMXMLObject(nextSibling,
                                                  context, provider));
                 nextSibling = DOMUtils.getNextSiblingElement(nextSibling);
@@ -437,18 +430,8 @@ public final class DOMXMLSignature extends DOMStructure
     
     @Override
     public int hashCode() {
-        int result = 17;
-        if (id != null) {
-            result = 31 * result + id.hashCode();
-        }
-        if (ki != null) {
-            result = 31 * result + ki.hashCode();
-        }
-        result = 31 * result + sv.hashCode();
-        result = 31 * result + si.hashCode();
-        result = 31 * result + objects.hashCode();
-
-        return result;
+        assert false : "hashCode not designed";
+        return 42; // any arbitrary constant will do 
     }
 
     private void digestReference(DOMReference ref, XMLSignContext signContext)
@@ -595,12 +578,8 @@ public final class DOMXMLSignature extends DOMStructure
         
         @Override
         public int hashCode() {
-            int result = 17;
-            if (id != null) {
-                result = 31 * result + id.hashCode();
-            }
-
-            return result;
+            assert false : "hashCode not designed";
+            return 42; // any arbitrary constant will do 
         }
 
         public void marshal(Node parent, String dsPrefix,

@@ -1092,9 +1092,6 @@ public class XMLCipher {
         if (algorithm == null) {
             throw new XMLEncryptionException("XMLCipher instance without transformation specified");
         }
-        if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
-        }
 
         byte[] serializedOctets = null;
         if (serializedData == null) {
@@ -1606,9 +1603,6 @@ public class XMLCipher {
     private Document decryptElement(Element element) throws XMLEncryptionException {
         if (log.isDebugEnabled()) {
             log.debug("Decrypting element...");
-        }
-        if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer)serializer).setSecureValidation(secureValidation);
         }
 
         if (cipherMode != DECRYPT_MODE) {
@@ -2450,7 +2444,7 @@ public class XMLCipher {
                         EncryptionConstants.EncryptionSpecNS, 
                         EncryptionConstants._TAG_DATAREFERENCE);
                 for (int i = 0; i < list.getLength() ; i++) {
-                    String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
+                    String uri = ((Element) list.item(i)).getAttribute("URI");
                     result.add(result.newDataReference(uri));
                 }
                 break;
@@ -2460,7 +2454,7 @@ public class XMLCipher {
                         EncryptionConstants.EncryptionSpecNS, 
                         EncryptionConstants._TAG_KEYREFERENCE);
                 for (int i = 0; i < list.getLength() ; i++) {
-                    String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
+                    String uri = ((Element) list.item(i)).getAttribute("URI");
                     result.add(result.newKeyReference(uri));
                 }
             }
@@ -3503,7 +3497,7 @@ public class XMLCipher {
                             EncryptionConstants.EncryptionSpecNS,
                             tagName
                         );
-                    result.setAttributeNS(null, EncryptionConstants._ATT_URI, uri);
+                    result.setAttribute(EncryptionConstants._ATT_URI, uri);
 
                     // TODO: Need to martial referenceInformation
                     // Figure out how to make this work..

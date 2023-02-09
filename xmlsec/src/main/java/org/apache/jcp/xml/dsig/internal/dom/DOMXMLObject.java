@@ -208,19 +208,8 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
     
     @Override
     public int hashCode() {
-        int result = 17;
-        if (id != null) {
-            result = 31 * result + id.hashCode();
-        }
-        if (encoding != null) {
-            result = 31 * result + encoding.hashCode();
-        }
-        if (mimeType != null) {
-            result = 31 * result + mimeType.hashCode();
-        }
-        result = 31 * result + content.hashCode();
-
-        return result;
+        assert false : "hashCode not designed";
+        return 42; // any arbitrary constant will do 
     }
 
     private boolean equalsContent(List<XMLStructure> otherContent) {

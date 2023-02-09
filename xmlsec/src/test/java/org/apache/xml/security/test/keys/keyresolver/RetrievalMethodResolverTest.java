@@ -22,10 +22,10 @@ import java.io.FileInputStream;
 import java.security.Security;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
 import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 
 
@@ -52,7 +52,9 @@ public class RetrievalMethodResolverTest extends org.junit.Assert {
             fis = new FileInputStream(filename);
         }
         
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(fis);
         
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
@@ -72,7 +74,9 @@ public class RetrievalMethodResolverTest extends org.junit.Assert {
             fis = new FileInputStream(filename);
         }
         
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(fis);
         
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);

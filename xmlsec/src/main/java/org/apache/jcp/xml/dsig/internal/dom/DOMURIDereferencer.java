@@ -90,7 +90,6 @@ public class DOMURIDereferencer implements URIDereferencer {
                 }
                 
                 XMLSignatureInput result = new XMLSignatureInput(referencedElem);
-                result.setSecureValidation(secVal);
                 if (!uri.substring(1).startsWith("xpointer(id(")) {
                     result.setExcludeComments(true);
                 }
@@ -108,7 +107,7 @@ public class DOMURIDereferencer implements URIDereferencer {
         try {
             ResourceResolver apacheResolver = 
                 ResourceResolver.getInstance(uriAttr, baseURI, secVal);
-            XMLSignatureInput in = apacheResolver.resolve(uriAttr, baseURI, secVal);
+            XMLSignatureInput in = apacheResolver.resolve(uriAttr, baseURI);
             if (in.isOctetStream()) {
                 return new ApacheOctetStreamData(in);
             } else {

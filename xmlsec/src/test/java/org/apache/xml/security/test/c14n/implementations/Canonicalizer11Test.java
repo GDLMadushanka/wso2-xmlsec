@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
@@ -39,7 +40,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.test.DSNamespaceContext;
 import org.apache.xml.security.utils.IgnoreAllErrorHandler;
 import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -355,8 +355,12 @@ public class Canonicalizer11Test extends org.junit.Assert {
     ) throws IOException, FileNotFoundException, SAXException,
         ParserConfigurationException, CanonicalizationException,
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(validating, false);
+        dfactory.setNamespaceAware(true);
+        dfactory.setValidating(validating);
+
+        DocumentBuilder documentBuilder = dfactory.newDocumentBuilder();
 
         // throw away all warnings and errors
         documentBuilder.setErrorHandler(new IgnoreAllErrorHandler());

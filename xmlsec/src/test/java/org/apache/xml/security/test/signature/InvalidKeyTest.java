@@ -22,9 +22,10 @@ import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PublicKey;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,7 +67,9 @@ public class InvalidKeyTest extends org.junit.Assert {
         FileInputStream is = new FileInputStream(BASEDIR + SEP +
             "src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
             
-        Document e = XMLUtils.createDocumentBuilder(false).parse(is);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document e = dbf.newDocumentBuilder().parse(is);
             
         Node assertion = e.getFirstChild();
         while (!(assertion instanceof Element)) {

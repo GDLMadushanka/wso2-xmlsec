@@ -18,9 +18,11 @@
  */
 package org.apache.xml.security.test.c14n.implementations;
 
+
 import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -28,7 +30,6 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.test.DSNamespaceContext;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -76,7 +77,10 @@ public class Santuario273Test extends org.junit.Assert {
 
     @org.junit.Test
     public void testC14n11Base() throws Exception {
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(true);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setNamespaceAware(true);
+        dfactory.setValidating(true);
+        DocumentBuilder documentBuilder = dfactory.newDocumentBuilder();
 
         documentBuilder.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
         byte inputBytes[] = input.getBytes();

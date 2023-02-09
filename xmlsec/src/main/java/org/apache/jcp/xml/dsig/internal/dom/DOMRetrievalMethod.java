@@ -37,6 +37,7 @@ import java.net.URISyntaxException;
 import java.security.Provider;
 import java.util.*;
 
+import javax.xml.XMLConstants;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dom.DOMCryptoContext;
@@ -131,30 +132,21 @@ public final class DOMRetrievalMethod extends DOMStructure
         List<Transform> transforms = new ArrayList<Transform>();
         Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
         
+        int transformCount = 0;
         if (transformsElem != null) {
-            String localName = transformsElem.getLocalName();
-            if (!localName.equals("Transforms")) {
-                throw new MarshalException("Invalid element name: " +
-                                           localName + ", expected Transforms");
-            }
             Element transformElem =
-                DOMUtils.getFirstChildElement(transformsElem, "Transform");
-            transforms.add(new DOMTransform(transformElem, context, provider));
-            transformElem = DOMUtils.getNextSiblingElement(transformElem); 
+                DOMUtils.getFirstChildElement(transformsElem);
             while (transformElem != null) {
-                String name = transformElem.getLocalName();
-                if (!name.equals("Transform")) {
-                    throw new MarshalException("Invalid element name: " +
-                                               name + ", expected Transform");
-                }
                 transforms.add
                     (new DOMTransform(transformElem, context, provider));
-                if (secVal && (transforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT)) {
+                transformElem = DOMUtils.getNextSiblingElement(transformElem);
+                
+                transformCount++;
+                if (secVal && (transformCount > DOMReference.MAXIMUM_TRANSFORM_COUNT)) {
                     String error = "A maxiumum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " " 
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }
-                transformElem = DOMUtils.getNextSiblingElement(transformElem);
             }
         }
         if (transforms.isEmpty()) {
@@ -236,21 +228,6 @@ public final class DOMRetrievalMethod extends DOMStructure
         } catch (Exception e) {
             throw new URIReferenceException(e);
         }
-
-        // guard against RetrievalMethod loops
-        if (data instanceof NodeSetData && Utils.secureValidation(context)) {
-            NodeSetData nsd = (NodeSetData)data;
-            Iterator i = nsd.iterator();
-            if (i.hasNext()) {
-                Node root = (Node)i.next();
-                if ("RetrievalMethod".equals(root.getLocalName())) {
-                    throw new URIReferenceException(
-                        "It is forbidden to have one RetrievalMethod point " +
-                        "to another when secure validation is enabled");
-                }
-            }
-        }
-
         return data;
     }
 
@@ -259,9 +236,10 @@ public final class DOMRetrievalMethod extends DOMStructure
     {
         try {
             ApacheData data = (ApacheData)dereference(context);
-            boolean secVal = Utils.secureValidation(context);
-            DocumentBuilder db = 
-                org.apache.xml.security.utils.XMLUtils.createDocumentBuilder(false, secVal);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(new ByteArrayInputStream
                 (data.getXMLSignatureInput().getBytes()));
             Element kiElem = doc.getDocumentElement();
@@ -298,8 +276,12 @@ public final class DOMRetrievalMethod extends DOMStructure
         if (type != null) {
             result = 31 * result + type.hashCode();
         }
-        result = 31 * result + uri.hashCode();
-        result = 31 * result + transforms.hashCode();
+        if (uri != null) {
+            result = 31 * result + uri.hashCode();
+        }
+        if (transforms != null) {
+            result = 31 * result + transforms.hashCode();
+        }
         
         return result;
     }

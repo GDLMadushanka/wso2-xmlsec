@@ -28,11 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
@@ -1024,24 +1019,6 @@ public class XMLUtils {
             }
         }
         return true;
-    }
-    
-    public static DocumentBuilder createDocumentBuilder(boolean validating) throws ParserConfigurationException {
-        return createDocumentBuilder(validating, true);
-    }
-    
-    public static DocumentBuilder createDocumentBuilder(
-        boolean validating, boolean disAllowDocTypeDeclarations
-    ) throws ParserConfigurationException {
-        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-        if (disAllowDocTypeDeclarations) {
-            dfactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-        }
-        dfactory.setValidating(validating);        
-        dfactory.setNamespaceAware(true);
-        
-        return dfactory.newDocumentBuilder();
     }
 
 }

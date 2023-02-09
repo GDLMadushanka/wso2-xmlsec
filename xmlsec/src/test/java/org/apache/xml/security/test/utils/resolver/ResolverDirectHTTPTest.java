@@ -18,8 +18,9 @@
  */
 package org.apache.xml.security.test.utils.resolver;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.security.Init;
-import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
@@ -50,7 +51,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     public void testBug40783() throws Exception {
         Init.init();
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("id");
         uri.setNodeValue("urn:ddd:uuu");
         ((Element) doc.createElement("test")).setAttributeNode(uri);
@@ -65,7 +66,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     @Ignore
     public void testProxyAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -80,7 +81,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     @Ignore
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -100,7 +101,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     @Ignore
     public void testServerAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -113,7 +114,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     @Ignore
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
@@ -131,7 +132,7 @@ public class ResolverDirectHTTPTest extends org.junit.Assert {
     @Test
     @Ignore
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 

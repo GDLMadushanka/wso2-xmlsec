@@ -184,14 +184,8 @@ public class DOMTransform extends DOMStructure implements Transform {
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + getAlgorithm().hashCode();
-        AlgorithmParameterSpec spec = getParameterSpec();
-        if (spec != null) {
-            result = 31 * result + spec.hashCode();
-        }
-
-        return result;
+        assert false : "hashCode not designed";
+        return 42; // any arbitrary constant will do 
     }
     
     /**

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
-import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 import org.apache.xml.security.utils.resolver.implementations.ResolverFragment;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
@@ -201,8 +200,7 @@ public class ResourceResolver {
     public static void register(String className) {
         try {
             Class<ResourceResolverSpi> resourceResolverClass = 
-                (Class<ResourceResolverSpi>) 
-                ClassLoaderUtils.loadClass(className, ResourceResolver.class);
+                (Class<ResourceResolverSpi>) Class.forName(className);
             register(resourceResolverClass, false);
         } catch (ClassNotFoundException e) {
             log.warn("Error loading resolver " + className + " disabling it");
@@ -219,8 +217,7 @@ public class ResourceResolver {
     public static void registerAtStart(String className) {
         try {
             Class<ResourceResolverSpi> resourceResolverClass = 
-                (Class<ResourceResolverSpi>)
-                ClassLoaderUtils.loadClass(className, ResourceResolver.class);
+                (Class<ResourceResolverSpi>) Class.forName(className);
             register(resourceResolverClass, true);
         } catch (ClassNotFoundException e) {
             log.warn("Error loading resolver " + className + " disabling it");

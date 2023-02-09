@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.Set;
-
 import javax.xml.crypto.*;
 import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.TransformException;
@@ -72,10 +71,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
             throw new ClassCastException
                 ("context must be of type DOMCryptoContext");
         }
-        if (parent == null) {
-            throw new NullPointerException();
-        }
-        if (!(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
+        if (parent == null || !(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("parent must be of type DOMStructure");
         }
         transformElem = (Element)
@@ -90,10 +86,7 @@ public abstract class ApacheCanonicalizer extends TransformService {
             throw new ClassCastException
                 ("context must be of type DOMCryptoContext");
         }
-        if (parent == null) {
-            throw new NullPointerException();
-        }
-        if (!(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
+        if (parent == null || !(parent instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("parent must be of type DOMStructure");
         }
         transformElem = (Element)
@@ -113,8 +106,6 @@ public abstract class ApacheCanonicalizer extends TransformService {
         if (apacheCanonicalizer == null) {
             try {
                 apacheCanonicalizer = Canonicalizer.getInstance(getAlgorithm());
-                boolean secVal = Utils.secureValidation(xc);
-                apacheCanonicalizer.setSecureValidation(secVal);
                 if (log.isDebugEnabled()) {
                     log.debug("Created canonicalizer for algorithm: " + getAlgorithm());
                 }
@@ -211,8 +202,6 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 apacheTransform = 
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 apacheTransform.setElement(transformElem, xc.getBaseURI());
-                boolean secVal = Utils.secureValidation(xc);
-                apacheTransform.setSecureValidation(secVal);
                 if (log.isDebugEnabled()) {
                     log.debug("Created transform for algorithm: " + getAlgorithm());            
                 }
@@ -254,9 +243,6 @@ public abstract class ApacheCanonicalizer extends TransformService {
             }
         }
 
-        boolean secVal = Utils.secureValidation(xc);
-        in.setSecureValidation(secVal);
-        
         try {
             in = apacheTransform.performTransform(in, os);
             if (!in.isNodeSet() && !in.isElement()) {

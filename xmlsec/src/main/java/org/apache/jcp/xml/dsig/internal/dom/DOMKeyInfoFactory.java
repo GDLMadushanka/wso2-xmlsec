@@ -121,10 +121,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
 
     public KeyInfo unmarshalKeyInfo(XMLStructure xmlStructure) 
         throws MarshalException {
-        if (xmlStructure == null) {
-            throw new NullPointerException("xmlStructure cannot be null");
-        }
-        if (!(xmlStructure instanceof javax.xml.crypto.dom.DOMStructure)) {
+        if (xmlStructure == null || !(xmlStructure instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("xmlStructure must be of type DOMStructure");
         }
         Node node = 

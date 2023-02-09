@@ -27,7 +27,6 @@ package org.apache.jcp.xml.dsig.internal.dom;
 import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Provider;
-import java.security.spec.AlgorithmParameterSpec;
 
 import org.w3c.dom.Element;
 
@@ -51,9 +50,6 @@ public class DOMCanonicalizationMethod extends DOMTransform
         throws InvalidAlgorithmParameterException
     {
         super(spi);
-        if (!(spi instanceof ApacheCanonicalizer) && !isC14Nalg(spi.getAlgorithm())) {
-            throw new InvalidAlgorithmParameterException("Illegal CanonicalizationMethod");
-        } 
     }
 
     /**
@@ -68,9 +64,6 @@ public class DOMCanonicalizationMethod extends DOMTransform
         throws MarshalException
     {
         super(cmElem, context, provider);
-        if (!(spi instanceof ApacheCanonicalizer) && !isC14Nalg(spi.getAlgorithm())) {
-            throw new MarshalException("Illegal CanonicalizationMethod");
-        } 
     }
 
     /**
@@ -115,22 +108,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
     
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + getAlgorithm().hashCode();
-        AlgorithmParameterSpec spec = getParameterSpec();
-        if (spec != null) {
-            result = 31 * result + spec.hashCode();
-        }
-
-        return result;
+        assert false : "hashCode not designed";
+        return 42; // any arbitrary constant will do 
     }
-    
-    private static boolean isC14Nalg(String alg) {
-        return alg.equals(CanonicalizationMethod.INCLUSIVE) 
-            || alg.equals(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS) 
-            || alg.equals(CanonicalizationMethod.EXCLUSIVE) 
-            || alg.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS) 
-            || alg.equals(DOMCanonicalXMLC14N11Method.C14N_11) 
-            || alg.equals(DOMCanonicalXMLC14N11Method.C14N_11_WITH_COMMENTS);
-    } 
 }

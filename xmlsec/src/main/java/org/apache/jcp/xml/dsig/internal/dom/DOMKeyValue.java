@@ -29,7 +29,6 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
-
 // import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -58,7 +57,6 @@ import org.w3c.dom.Node;
 
 import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.utils.Base64;
-import org.apache.xml.security.utils.ClassLoaderUtils;
 
 /**
  * DOM-based implementation of KeyValue.
@@ -216,11 +214,9 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
                         ("unable to create RSA KeyFactory: " + e.getMessage());
                 }
             }
-            Element modulusElem = DOMUtils.getFirstChildElement(kvtElem,
-                                                                "Modulus");
+            Element modulusElem = DOMUtils.getFirstChildElement(kvtElem);
             modulus = new DOMCryptoBinary(modulusElem.getFirstChild());
-            Element exponentElem = DOMUtils.getNextSiblingElement(modulusElem,
-                                                                  "Exponent");
+            Element exponentElem = DOMUtils.getNextSiblingElement(modulusElem);
             exponent = new DOMCryptoBinary(exponentElem.getFirstChild());
             RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus.getBigNum(),
                                                          exponent.getBigNum());
@@ -289,13 +285,13 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
             // check for P and Q
             if (curElem.getLocalName().equals("P")) {
                 p = new DOMCryptoBinary(curElem.getFirstChild());
-                curElem = DOMUtils.getNextSiblingElement(curElem, "Q");
+                curElem = DOMUtils.getNextSiblingElement(curElem);
                 q = new DOMCryptoBinary(curElem.getFirstChild());
                 curElem = DOMUtils.getNextSiblingElement(curElem);
             } 
             if (curElem.getLocalName().equals("G")) {
                 g = new DOMCryptoBinary(curElem.getFirstChild());
-                curElem = DOMUtils.getNextSiblingElement(curElem, "Y");
+                curElem = DOMUtils.getNextSiblingElement(curElem);
             }
             y = new DOMCryptoBinary(curElem.getFirstChild());
             curElem = DOMUtils.getNextSiblingElement(curElem);
@@ -362,14 +358,14 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
         }
 
         void getMethods() throws ClassNotFoundException, NoSuchMethodException {
-            Class c = ClassLoaderUtils.loadClass("sun.security.ec.ECParameters", DOMKeyValue.class);
-            Class[] params = new Class<?>[] { ECPoint.class, EllipticCurve.class };
+            Class c  = Class.forName("sun.security.ec.ECParameters");
+            Class[] params = new Class[] { ECPoint.class, EllipticCurve.class };
             encodePoint = c.getMethod("encodePoint", params);
             params = new Class[] { ECParameterSpec.class };
             getCurveName = c.getMethod("getCurveName", params);
             params = new Class[] { byte[].class, EllipticCurve.class };
             decodePoint = c.getMethod("decodePoint", params);
-            c = ClassLoaderUtils.loadClass("sun.security.ec.NamedCurve", DOMKeyValue.class);
+            c  = Class.forName("sun.security.ec.NamedCurve");
             params = new Class[] { String.class };
             getECParameterSpec = c.getMethod("getECParameterSpec", params);
         }
@@ -460,7 +456,7 @@ public abstract class DOMKeyValue extends DOMStructure implements KeyValue {
             } else {
                 throw new MarshalException("Invalid ECKeyValue");
             }
-            curElem = DOMUtils.getNextSiblingElement(curElem, "PublicKey");
+            curElem = DOMUtils.getNextSiblingElement(curElem);
             ECPoint ecPoint = null;
             try {
                 Object[] args = new Object[] { Base64.decode(curElem),

@@ -22,7 +22,9 @@ import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
@@ -39,7 +41,6 @@ public abstract class CanonicalizerSpi {
 
     /** Reset the writer after a c14n */
     protected boolean reset = false;
-    protected boolean secureValidation;
     
     /**
      * Method canonicalize
@@ -58,8 +59,13 @@ public abstract class CanonicalizerSpi {
 
         java.io.InputStream bais = new ByteArrayInputStream(inputBytes);
         InputSource in = new InputSource(bais);
-        
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+
+        // needs to validate for ID attribute normalization
+        dfactory.setNamespaceAware(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
 
         Document document = db.parse(in);
         return this.engineCanonicalizeSubTree(document);
@@ -155,13 +161,5 @@ public abstract class CanonicalizerSpi {
      * @param os
      */
     public abstract void setWriter(OutputStream os);
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
-    }
 
 }

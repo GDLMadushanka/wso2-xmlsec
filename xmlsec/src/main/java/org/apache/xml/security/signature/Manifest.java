@@ -602,8 +602,4 @@ public class Manifest extends SignatureElementProxy {
     public String getBaseLocalName() {
         return Constants._TAG_MANIFEST;
     }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
 }

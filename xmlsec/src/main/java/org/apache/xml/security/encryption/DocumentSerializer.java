@@ -22,10 +22,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -38,6 +39,8 @@ import org.xml.sax.SAXException;
  */
 public class DocumentSerializer extends AbstractSerializer {
     
+    protected DocumentBuilderFactory dbf;
+
     /**
      * @param source
      * @param ctx
@@ -55,7 +58,6 @@ public class DocumentSerializer extends AbstractSerializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    @Deprecated
     public Node deserialize(String source, Node ctx) throws XMLEncryptionException {
         String fragment = createContext(source, ctx);
         return deserialize(ctx, new InputSource(new StringReader(fragment)));
@@ -69,7 +71,14 @@ public class DocumentSerializer extends AbstractSerializer {
      */
     private Node deserialize(Node ctx, InputSource inputSource) throws XMLEncryptionException {
         try {
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
+            if (dbf == null) {
+                dbf = DocumentBuilderFactory.newInstance();
+                dbf.setNamespaceAware(true);
+                dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+                dbf.setAttribute("http://xml.org/sax/features/namespaces", Boolean.TRUE);
+                dbf.setValidating(false);
+            }
+            DocumentBuilder db = dbf.newDocumentBuilder();
             Document d = db.parse(inputSource);
 
             Document contextDocument = null;

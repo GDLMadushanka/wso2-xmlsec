@@ -26,7 +26,6 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 
 import org.apache.jcp.xml.dsig.internal.dom.DOMSignedInfo;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 /**
@@ -69,8 +68,12 @@ public class JSRForbiddenRefCountTest extends org.junit.Assert {
         }
 
         File f = new File(directory + "/" + file);
+        javax.xml.parsers.DocumentBuilderFactory dbf =
+            javax.xml.parsers.DocumentBuilderFactory.newInstance();
 
-        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        dbf.setNamespaceAware(true);
+
+        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
         org.w3c.dom.Document doc = db.parse(f);
 
         return (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,

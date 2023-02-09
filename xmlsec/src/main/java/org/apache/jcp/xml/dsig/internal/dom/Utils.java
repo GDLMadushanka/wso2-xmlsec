@@ -28,9 +28,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.*;
-import javax.xml.crypto.XMLCryptoContext;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import javax.xml.crypto.XMLCryptoContext;
 
 /**
  * Miscellaneous static utility methods for use in JSR 105 RI.
@@ -106,13 +107,14 @@ public final class Utils {
     }
 
     static boolean secureValidation(XMLCryptoContext xc) {
-        boolean secureValidation = true;
-        if (xc != null) {
-            Boolean value = (Boolean)xc.getProperty("org.apache.jcp.xml.dsig.secureValidation");
-            if (value != null) {
-                secureValidation = value;
-            }
+        if (xc == null) {
+            return false;
         }
-        return secureValidation;
+        return getBoolean(xc, "org.apache.jcp.xml.dsig.secureValidation");
+    }
+
+    private static boolean getBoolean(XMLCryptoContext xc, String name) {
+        Boolean value = (Boolean)xc.getProperty(name);
+        return (value != null && value.booleanValue());
     }
 }

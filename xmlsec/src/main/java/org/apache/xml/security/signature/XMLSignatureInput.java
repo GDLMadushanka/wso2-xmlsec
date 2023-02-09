@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
@@ -85,7 +87,6 @@ public class XMLSignatureInput {
      * A cached bytes
      */
     private byte[] bytes = null;
-    private boolean secureValidation = true;
 
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered
@@ -110,6 +111,8 @@ public class XMLSignatureInput {
    
     private boolean needsToBeExpanded = false;
     private OutputStream outputStream = null;
+    
+    private DocumentBuilderFactory dfactory;
     
     /**
      * Construct a XMLSignatureInput from an octet array.
@@ -212,12 +215,12 @@ public class XMLSignatureInput {
             if (circumvent) {
                 XMLUtils.circumventBug2650(XMLUtils.getOwnerDocument(subNode));
             }
-            inputNodeSet = new LinkedHashSet<Node>();
+            inputNodeSet = new HashSet<Node>();
             XMLUtils.getSet(subNode, inputNodeSet, excludeNode, excludeComments);
             return inputNodeSet;
         } else if (isOctetStream()) {
             convertToNodes();
-            Set<Node> result = new LinkedHashSet<Node>();
+            Set<Node> result = new HashSet<Node>();
             XMLUtils.getSet(subNode, result, null, false); 
             return result;
         }
@@ -549,7 +552,13 @@ public class XMLSignatureInput {
         
     void convertToNodes() throws CanonicalizationException, 
         ParserConfigurationException, IOException, SAXException {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, secureValidation);
+        if (dfactory == null) {
+            dfactory = DocumentBuilderFactory.newInstance();
+            dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            dfactory.setValidating(false);        
+            dfactory.setNamespaceAware(true);
+        }
+        DocumentBuilder db = dfactory.newDocumentBuilder();
         // select all nodes, also the comments.        
         try {
             db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
@@ -574,14 +583,6 @@ public class XMLSignatureInput {
             this.inputOctetStreamProxy = null;
             this.bytes = null;
         }
-    }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
     }
     
 }

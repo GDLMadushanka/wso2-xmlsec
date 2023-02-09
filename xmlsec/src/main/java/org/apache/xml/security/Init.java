@@ -24,7 +24,9 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
@@ -158,7 +160,13 @@ public class Init {
     private static void fileInit(InputStream is) {
         try {
             /* read library configuration file */
-            DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+
+            dbf.setNamespaceAware(true);
+            dbf.setValidating(false);
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(is);
             Node config = doc.getFirstChild();
             for (; config != null; config = config.getNextSibling()) {
@@ -178,8 +186,8 @@ public class Init {
                 if (tag.equals("ResourceBundles")) {
                     Element resource = (Element)el;
                     /* configure internationalization */
-                    Attr langAttr = resource.getAttributeNodeNS(null, "defaultLanguageCode");
-                    Attr countryAttr = resource.getAttributeNodeNS(null, "defaultCountryCode");
+                    Attr langAttr = resource.getAttributeNode("defaultLanguageCode");
+                    Attr countryAttr = resource.getAttributeNode("defaultCountryCode");
                     String languageCode = 
                         (langAttr == null) ? null : langAttr.getNodeValue();
                     String countryCode = 
@@ -237,7 +245,7 @@ public class Init {
                             XMLUtils.selectNodes(algorithmsNode.getFirstChild(), CONF_NS, "Algorithm");
                         for (int i = 0; i < algorithms.length; i++) {
                             Element element = algorithms[i];
-                            String id = element.getAttributeNS(null, "URI");
+                            String id = element.getAttribute("URI");
                             JCEMapper.register(id, new JCEMapper.Algorithm(element));
                         }
                     }

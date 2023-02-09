@@ -39,7 +39,6 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractSerializer implements Serializer {
     
     protected Canonicalizer canon;
-    protected boolean secureValidation;
     
     public void setCanonicalizer(Canonicalizer canon) {
         this.canon = canon;
@@ -56,7 +55,6 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>Element</code>.
      * @throws Exception
      */
-    @Deprecated
     public String serialize(Element element) throws Exception {
         return canonSerialize(element);
     }
@@ -96,10 +94,8 @@ public abstract class AbstractSerializer implements Serializer {
      *   <code>NodeList</code>.
      * @throws Exception
      */
-    @Deprecated
     public String serialize(NodeList content) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         for (int i = 0; i < content.getLength(); i++) {                
@@ -121,7 +117,6 @@ public abstract class AbstractSerializer implements Serializer {
      */
     public byte[] serializeToByteArray(NodeList content) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         for (int i = 0; i < content.getLength(); i++) {
@@ -136,10 +131,8 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the canonicalization of the node
      * @throws Exception
      */ 
-    @Deprecated
     public String canonSerialize(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);                      
         canon.notReset();
         canon.canonicalizeSubtree(node);                    
@@ -156,7 +149,6 @@ public abstract class AbstractSerializer implements Serializer {
      */ 
     public byte[] canonSerializeToByteArray(Node node) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        canon.setSecureValidation(secureValidation);
         canon.setWriter(baos);
         canon.notReset();
         canon.canonicalizeSubtree(node);
@@ -169,7 +161,6 @@ public abstract class AbstractSerializer implements Serializer {
      * @return the Node resulting from the parse of the source
      * @throws XMLEncryptionException
      */
-    @Deprecated
     public abstract Node deserialize(String source, Node ctx) throws XMLEncryptionException;
 
     /**
@@ -249,14 +240,6 @@ public abstract class AbstractSerializer implements Serializer {
         }
         sb.append(">" + source + "</dummy>");
         return sb.toString();
-    }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
     }
     
 }

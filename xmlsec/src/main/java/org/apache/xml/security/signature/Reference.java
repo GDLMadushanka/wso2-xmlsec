@@ -59,7 +59,7 @@ import org.w3c.dom.Text;
  *
  * This includes:
  *
- * Construct a <CODE>ds:Reference</CODE> from an {@link org.w3c.dom.Element}.
+ * Constuct a <CODE>ds:Reference</CODE> from an {@link org.w3c.dom.Element}.
  *
  * <p>Create a new reference</p>
  * <pre>
@@ -414,7 +414,7 @@ public class Reference extends SignatureElementProxy {
                 );
             resolver.addProperties(this.manifest.getResolverProperties());
 
-            return resolver.resolve(uriAttr, this.baseURI, secureValidation);
+            return resolver.resolve(uriAttr, this.baseURI);
         }  catch (ResourceResolverException ex) {
             throw new ReferenceNotInitializedException("empty", ex);
         }

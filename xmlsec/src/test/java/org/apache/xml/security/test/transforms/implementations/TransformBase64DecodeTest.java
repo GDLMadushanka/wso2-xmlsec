@@ -21,6 +21,7 @@ package org.apache.xml.security.test.transforms.implementations;
 import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -30,7 +31,6 @@ import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.implementations.TransformBase64Decode;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -105,7 +105,9 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
             + "</Object>\n"
             ;
         //J+
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setNamespaceAware(true);
+        DocumentBuilder db = dfactory.newDocumentBuilder();
 
         db.setErrorHandler(new org.apache.xml.security.utils.IgnoreAllErrorHandler());
 
@@ -137,7 +139,10 @@ public class TransformBase64DecodeTest extends org.junit.Assert {
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setNamespaceAware(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
         Document doc = db.newDocument();
 
         if (doc == null) {

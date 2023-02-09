@@ -374,8 +374,8 @@ public final class XMLSignature extends SignatureElementProxy {
 
         // If it exists use it, but it's not mandatory
         if (keyInfoElem != null 
-            && Constants.SignatureSpecNS.equals(keyInfoElem.getNamespaceURI()) 
-            && Constants._TAG_KEYINFO.equals(keyInfoElem.getLocalName())) {
+            && keyInfoElem.getNamespaceURI().equals(Constants.SignatureSpecNS) 
+            && keyInfoElem.getLocalName().equals(Constants._TAG_KEYINFO)) {
             this.keyInfo = new KeyInfo(keyInfoElem, baseURI);
             this.keyInfo.setSecureValidation(secureValidation);
         }
@@ -842,7 +842,7 @@ public final class XMLSignature extends SignatureElementProxy {
     }
 
     /**
-     * Signal whether Manifest should be automatically validated.
+     * Signal wether Manifest should be automatically validated.
      * Checking the digests in References in a Signature are mandatory, but for
      * References inside a Manifest it is application specific. This boolean is
      * to indicate that the References inside Manifests should be validated.

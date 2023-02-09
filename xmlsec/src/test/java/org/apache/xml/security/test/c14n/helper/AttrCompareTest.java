@@ -19,11 +19,11 @@
 package org.apache.xml.security.test.c14n.helper;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.xml.security.c14n.helper.AttrCompare;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -217,7 +217,10 @@ public class AttrCompareTest extends org.junit.Assert {
     private static Document createDoc(
         String documentElement
     ) throws ParserConfigurationException {
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = dfactory.newDocumentBuilder();
+
+        dfactory.setNamespaceAware(true);
 
         Document doc = documentBuilder.newDocument();
         Element root = doc.createElementNS(null, documentElement);

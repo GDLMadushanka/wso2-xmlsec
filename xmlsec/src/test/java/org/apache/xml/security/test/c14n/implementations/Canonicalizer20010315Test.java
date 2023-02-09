@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -49,7 +50,6 @@ import org.apache.xml.security.test.DSNamespaceContext;
 import org.apache.xml.security.test.resource.TestVectorResolver;
 import org.apache.xml.security.utils.IgnoreAllErrorHandler;
 import org.apache.xml.security.utils.JavaUtils;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -608,8 +608,11 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         String fileRef = prefix + "in/37_c14n.xml";
         //String c14nURI = Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS;
         //boolean validating = true;
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        dfactory.setNamespaceAware(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
         org.xml.sax.EntityResolver resolver = new TestVectorResolver();
 
         db.setEntityResolver(resolver);
@@ -675,8 +678,11 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
             + "\n"
             + "";
         //J+
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        dfactory.setNamespaceAware(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
         Document doc = db.parse(new ByteArrayInputStream(inputStr.getBytes()));
         boolean weCatchedTheRelativeNS = false;
 
@@ -985,7 +991,12 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
     ParserConfigurationException, CanonicalizationException,
     InvalidCanonicalizerException, TransformerException, XPathExpressionException {
 
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(true);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+
+        dfactory.setNamespaceAware(true);
+        dfactory.setValidating(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
 
         db.setErrorHandler(new org.apache.xml.security.utils
                            .IgnoreAllErrorHandler());
@@ -1037,8 +1048,12 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
     ) throws IOException, FileNotFoundException, SAXException,
         ParserConfigurationException, CanonicalizationException,
         InvalidCanonicalizerException, TransformerException, XPathExpressionException {
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder documentBuilder = XMLUtils.createDocumentBuilder(validating, false);
+        dfactory.setNamespaceAware(true);
+        dfactory.setValidating(validating);
+
+        DocumentBuilder documentBuilder = dfactory.newDocumentBuilder();
 
         // throw away all warnings and errors
         documentBuilder.setErrorHandler(new IgnoreAllErrorHandler());
@@ -1112,7 +1127,8 @@ public class Canonicalizer20010315Test extends org.junit.Assert {
         //String ENCODING_ISO8859_1 = "ISO-8859-1";
         //String ENCODING_UTF8 = "UTF-8";
         String ENCODING_UTF16 = "UTF-16";
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(new ByteArrayInputStream(input));
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer();

@@ -26,6 +26,7 @@ import java.security.PublicKey;
 import java.util.Enumeration;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
@@ -33,7 +34,6 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
-import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -170,7 +170,9 @@ public class SignatureTest extends org.junit.Assert {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.newDocument();
 
         Element rootElement = doc.createElementNS("http://ns.example.org/", "root");

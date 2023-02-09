@@ -76,11 +76,9 @@ public final class DOMX509IssuerSerial extends DOMStructure
      *
      * @param isElem an X509IssuerSerial element
      */
-    public DOMX509IssuerSerial(Element isElem) throws MarshalException {
-        Element iNElem = DOMUtils.getFirstChildElement(isElem,
-                                                       "X509IssuerName");
-        Element sNElem = DOMUtils.getNextSiblingElement(iNElem,
-                                                        "X509SerialNumber");
+    public DOMX509IssuerSerial(Element isElem) {
+        Element iNElem = DOMUtils.getFirstChildElement(isElem);
+        Element sNElem = DOMUtils.getNextSiblingElement(iNElem);
         issuerName = iNElem.getFirstChild().getNodeValue();
         serialNumber = new BigInteger(sNElem.getFirstChild().getNodeValue());
     }
@@ -127,8 +125,12 @@ public final class DOMX509IssuerSerial extends DOMStructure
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + issuerName.hashCode();
-        result = 31 * result + serialNumber.hashCode();
+        if (issuerName != null) {
+            result = 31 * result + issuerName.hashCode();
+        }
+        if (serialNumber != null) {
+            result = 31 * result + serialNumber.hashCode();
+        }
         
         return result;
     }

@@ -18,9 +18,9 @@
  */
 package org.apache.xml.security.test.keys.content.x509;
 
-import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
-import org.apache.xml.security.utils.XMLUtils;
+import javax.xml.parsers.*;
 import org.w3c.dom.Document;
+import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
 
 /**
  * XMLX509IssuerSerial tests.
@@ -32,7 +32,9 @@ public class XMLX509IssuerSerialTest extends org.junit.Assert {
     private Document doc;
 
     public XMLX509IssuerSerialTest() throws Exception {
-        doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        doc = dbf.newDocumentBuilder().newDocument();
     }
 
     @org.junit.Test

@@ -38,7 +38,6 @@ import org.apache.xml.security.keys.keyresolver.implementations.X509IssuerSerial
 import org.apache.xml.security.keys.keyresolver.implementations.X509SKIResolver;
 import org.apache.xml.security.keys.keyresolver.implementations.X509SubjectNameResolver;
 import org.apache.xml.security.keys.storage.StorageResolver;
-import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -176,7 +175,7 @@ public class KeyResolver {
     public static void register(String className, boolean globalResolver) 
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         KeyResolverSpi keyResolverSpi =
-            (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+            (KeyResolverSpi) Class.forName(className).newInstance();
         keyResolverSpi.setGlobalResolver(globalResolver);
         register(keyResolverSpi, false);
     }
@@ -197,7 +196,7 @@ public class KeyResolver {
         KeyResolverSpi keyResolverSpi = null;
         Exception ex = null;
         try {
-            keyResolverSpi = (KeyResolverSpi) ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+            keyResolverSpi = (KeyResolverSpi) Class.forName(className).newInstance();
         } catch (ClassNotFoundException e) {
             ex = e;
         } catch (IllegalAccessException e) {
@@ -257,7 +256,7 @@ public class KeyResolver {
         List<KeyResolver> keyResolverList = new ArrayList<KeyResolver>(classNames.size());
         for (String className : classNames) {
             KeyResolverSpi keyResolverSpi =
-                (KeyResolverSpi)ClassLoaderUtils.loadClass(className, KeyResolver.class).newInstance();
+                (KeyResolverSpi) Class.forName(className).newInstance();
             keyResolverSpi.setGlobalResolver(false);
             keyResolverList.add(new KeyResolver(keyResolverSpi));
         }

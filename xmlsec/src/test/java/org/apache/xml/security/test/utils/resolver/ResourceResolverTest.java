@@ -19,11 +19,11 @@
 package org.apache.xml.security.test.utils.resolver;
 
 import java.io.File;
-
-import org.apache.xml.security.utils.XMLUtils;
-import org.apache.xml.security.utils.resolver.ResourceResolver;
+import javax.xml.parsers.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+
+import org.apache.xml.security.utils.resolver.ResourceResolver;
 
 /**
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
@@ -49,7 +49,8 @@ public class ResourceResolverTest extends org.junit.Assert {
         String className = 
             "org.apache.xml.security.test.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = 
+        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
         ResourceResolver res = 
@@ -73,7 +74,8 @@ public class ResourceResolverTest extends org.junit.Assert {
 
     @org.junit.Test
     public void testLocalFileWithEmptyBaseURI() throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+        Document doc = 
+            DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String basedir = System.getProperty("basedir");
         String file = new File(basedir, "build.xml").toURI().toString();

@@ -192,7 +192,10 @@ abstract class AbstractDOMSignatureMethod extends DOMStructure
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + getAlgorithm().hashCode();
+        String algorithm = getAlgorithm();
+        if (algorithm != null) {
+            result = 31 * result + algorithm.hashCode();
+        }
         AlgorithmParameterSpec spec = getParameterSpec();
         if (spec != null) {
             result = 31 * result + spec.hashCode();

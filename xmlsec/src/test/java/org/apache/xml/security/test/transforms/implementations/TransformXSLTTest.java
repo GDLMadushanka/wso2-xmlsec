@@ -21,7 +21,8 @@ package org.apache.xml.security.test.transforms.implementations;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -30,11 +31,11 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.XMLUtils;
 
 public class TransformXSLTTest extends org.junit.Assert {
 
@@ -89,7 +90,10 @@ public class TransformXSLTTest extends org.junit.Assert {
     
     private static Document getDocument(File file) 
         throws ParserConfigurationException, SAXException, IOException {
-        return XMLUtils.createDocumentBuilder(false).parse(new FileInputStream(file));
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setNamespaceAware(true);
+        DocumentBuilder db = dfactory.newDocumentBuilder();
+        return db.parse(new FileInputStream(file));
     }
 
 }

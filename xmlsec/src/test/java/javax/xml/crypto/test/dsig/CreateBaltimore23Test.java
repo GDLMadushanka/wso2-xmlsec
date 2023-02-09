@@ -31,11 +31,10 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.util.*;
-
+import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
-
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.URIDereferencer;
 import javax.xml.crypto.dsig.*;
@@ -44,13 +43,11 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.*;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 
 import javax.xml.crypto.test.KeySelectors;
 
@@ -87,7 +84,9 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         kifac = fac.getKeyInfoFactory();
-        db = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        db = dbf.newDocumentBuilder();
 
         // get key & self-signed certificate from keystore
         String fs = System.getProperty("file.separator");
@@ -554,8 +553,11 @@ public class CreateBaltimore23Test extends org.junit.Assert {
         dumpDocument(doc, sw);
 
         // read document back into DOM tree
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        dbf.setValidating(false);
         try {
-            doc = XMLUtils.createDocumentBuilder(false).parse
+            doc = dbf.newDocumentBuilder().parse
                 (new InputSource(new StringReader(sw.toString())));
         } catch (SAXParseException spe) {
             System.err.println("line:" + spe.getLineNumber());

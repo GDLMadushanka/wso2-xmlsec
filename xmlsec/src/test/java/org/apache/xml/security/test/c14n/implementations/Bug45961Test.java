@@ -19,11 +19,13 @@
 package org.apache.xml.security.test.c14n.implementations;
 
 import java.io.FileInputStream;
+
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -33,7 +35,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -52,7 +54,9 @@ public class Bug45961Test extends org.junit.Assert {
         Init.init();
         Canonicalizer.register(MOCK_CANONICALIZATION_METHOD,
                                MockCanonicalizationMethod.class.getName());
-        _builder = XMLUtils.createDocumentBuilder(false);
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        _builder = factory.newDocumentBuilder();
     }
 
     @org.junit.Test

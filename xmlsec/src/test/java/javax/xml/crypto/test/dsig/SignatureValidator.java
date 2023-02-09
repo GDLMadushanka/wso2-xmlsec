@@ -23,12 +23,10 @@ package javax.xml.crypto.test.dsig;
 
 import java.io.*;
 import java.util.*;
-
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
-
-import org.apache.xml.security.utils.XMLUtils;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
@@ -58,25 +56,23 @@ public class SignatureValidator {
 
     public DOMValidateContext getValidateContext(String fn, KeySelector ks, boolean secureValidation)
         throws Exception {
-        Document doc = XMLUtils.createDocumentBuilder(false, false).parse(new File(dir, fn));
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        dbf.setValidating(false);
+        Document doc = dbf.newDocumentBuilder().parse(new File(dir, fn));
         Element sigElement = getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
         }
         DOMValidateContext vc = new DOMValidateContext(ks, sigElement);
         vc.setBaseURI(dir.toURI().toString());
-        vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", secureValidation);
         return vc;
     }
 
     public boolean validate(String fn, KeySelector ks, URIDereferencer ud)
         throws Exception {
-        return validate(fn, ks, ud, true);
-    }
 
-    public boolean validate(String fn, KeySelector ks, URIDereferencer ud, boolean secureValidation)
-            throws Exception {
-        DOMValidateContext vc = getValidateContext(fn, ks, secureValidation);
+        DOMValidateContext vc = getValidateContext(fn, ks);
         if (ud != null) {
             vc.setURIDereferencer(ud);
         }

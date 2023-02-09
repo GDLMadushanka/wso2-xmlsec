@@ -25,7 +25,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_WithComments;
@@ -35,8 +37,6 @@ import org.apache.xml.security.c14n.implementations.Canonicalizer20010315OmitCom
 import org.apache.xml.security.c14n.implementations.Canonicalizer20010315WithComments;
 import org.apache.xml.security.c14n.implementations.CanonicalizerPhysical;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
-import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -98,7 +98,6 @@ public class Canonicalizer {
         new ConcurrentHashMap<String, Class<? extends CanonicalizerSpi>>();
     
     private final CanonicalizerSpi canonicalizerSpi;
-    private boolean secureValidation;
     
     /**
      * Constructor Canonicalizer
@@ -153,8 +152,7 @@ public class Canonicalizer {
         }
 
         canonicalizerHash.put(
-            algorithmURI, (Class<? extends CanonicalizerSpi>)
-            ClassLoaderUtils.loadClass(implementingClass, Canonicalizer.class)
+            algorithmURI, (Class<? extends CanonicalizerSpi>)Class.forName(implementingClass)
         );
     }
     
@@ -247,9 +245,15 @@ public class Canonicalizer {
         java.io.IOException, org.xml.sax.SAXException, CanonicalizationException {
         InputStream bais = new ByteArrayInputStream(inputBytes);
         InputSource in = new InputSource(bais);
+        DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
+        dfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+
+        dfactory.setNamespaceAware(true);
 
         // needs to validate for ID attribute normalization
-        DocumentBuilder db = XMLUtils.createDocumentBuilder(true, secureValidation);
+        dfactory.setValidating(true);
+
+        DocumentBuilder db = dfactory.newDocumentBuilder();
 
         /*
          * for some of the test vectors from the specification,
@@ -287,7 +291,6 @@ public class Canonicalizer {
      * @throws CanonicalizationException
      */
     public byte[] canonicalizeSubtree(Node node) throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return canonicalizerSpi.engineCanonicalizeSubTree(node);
     }
 
@@ -301,7 +304,6 @@ public class Canonicalizer {
      */
     public byte[] canonicalizeSubtree(Node node, String inclusiveNamespaces)
         throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return canonicalizerSpi.engineCanonicalizeSubTree(node, inclusiveNamespaces);
     }
 
@@ -315,7 +317,6 @@ public class Canonicalizer {
      */
     public byte[] canonicalizeXPathNodeSet(NodeList xpathNodeSet)
         throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet);
     }
 
@@ -331,7 +332,6 @@ public class Canonicalizer {
     public byte[] canonicalizeXPathNodeSet(
         NodeList xpathNodeSet, String inclusiveNamespaces
     ) throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return 
             canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
     } 
@@ -345,7 +345,6 @@ public class Canonicalizer {
      */
     public byte[] canonicalizeXPathNodeSet(Set<Node> xpathNodeSet) 
         throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet);
     }
 
@@ -360,7 +359,6 @@ public class Canonicalizer {
     public byte[] canonicalizeXPathNodeSet(
         Set<Node> xpathNodeSet, String inclusiveNamespaces
     ) throws CanonicalizationException {
-        canonicalizerSpi.secureValidation = secureValidation;
         return 
             canonicalizerSpi.engineCanonicalizeXPathNodeSet(xpathNodeSet, inclusiveNamespaces);
     }
@@ -388,14 +386,6 @@ public class Canonicalizer {
      */
     public void notReset() {
         canonicalizerSpi.reset = false;
-    }
-
-    public boolean isSecureValidation() {
-        return secureValidation;
-    }
-
-    public void setSecureValidation(boolean secureValidation) {
-        this.secureValidation = secureValidation;
     }
     
 }

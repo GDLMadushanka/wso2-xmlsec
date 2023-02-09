@@ -151,7 +151,6 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             }
 
             XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
-            result.setSecureValidation(context.secureValidation);
 
             result.setSourceURI(uriNew.toString());
             result.setMIMEType(mimeType);

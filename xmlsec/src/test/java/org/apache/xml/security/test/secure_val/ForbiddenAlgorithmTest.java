@@ -24,7 +24,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 
 
@@ -69,8 +68,12 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         }
 
         File f = new File(directory + "/" + file);
+        javax.xml.parsers.DocumentBuilderFactory dbf =
+            javax.xml.parsers.DocumentBuilderFactory.newInstance();
 
-        javax.xml.parsers.DocumentBuilder db = XMLUtils.createDocumentBuilder(false, false);
+        dbf.setNamespaceAware(true);
+
+        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
         org.w3c.dom.Document doc = db.parse(f);
 
         Element sigElement =

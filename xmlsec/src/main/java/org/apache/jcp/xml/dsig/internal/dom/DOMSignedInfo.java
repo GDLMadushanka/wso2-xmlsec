@@ -146,14 +146,11 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         id = DOMUtils.getAttributeValue(siElem, "Id");
 
         // unmarshal CanonicalizationMethod
-        Element cmElem = DOMUtils.getFirstChildElement(siElem,
-                                                       "CanonicalizationMethod");
-        canonicalizationMethod = new DOMCanonicalizationMethod(cmElem, context,
-                                                               provider);
+        Element cmElem = DOMUtils.getFirstChildElement(siElem);
+        canonicalizationMethod = new DOMCanonicalizationMethod(cmElem, context, provider);
 
         // unmarshal SignatureMethod
-        Element smElem = DOMUtils.getNextSiblingElement(cmElem,
-                                                        "SignatureMethod");
+        Element smElem = DOMUtils.getNextSiblingElement(cmElem);
         signatureMethod = DOMSignatureMethod.unmarshal(smElem);
         
         boolean secVal = Utils.secureValidation(context);
@@ -168,23 +165,19 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         
         // unmarshal References
         ArrayList<Reference> refList = new ArrayList<Reference>(5);
-        Element refElem = DOMUtils.getNextSiblingElement(smElem, "Reference");
-        refList.add(new DOMReference(refElem, context, provider));
-
-        refElem = DOMUtils.getNextSiblingElement(refElem); 
+        Element refElem = DOMUtils.getNextSiblingElement(smElem);
+        
+        int refCount = 0;
         while (refElem != null) {
-            String name = refElem.getLocalName();
-            if (!name.equals("Reference")) {
-                throw new MarshalException("Invalid element name: " +
-                                           name + ", expected Reference");
-            }
             refList.add(new DOMReference(refElem, context, provider));
-            if (secVal && (refList.size() > MAXIMUM_REFERENCE_COUNT)) {
+            refElem = DOMUtils.getNextSiblingElement(refElem);
+            
+            refCount++;
+            if (secVal && (refCount > MAXIMUM_REFERENCE_COUNT)) {
                 String error = "A maxiumum of " + MAXIMUM_REFERENCE_COUNT + " " 
                     + "references per Manifest are allowed with secure validation";
                 throw new MarshalException(error);
             }
-            refElem = DOMUtils.getNextSiblingElement(refElem);
         }
         references = Collections.unmodifiableList(refList);
     }
@@ -302,9 +295,15 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
         if (id != null) {
             result = 31 * result + id.hashCode();
         }
-        result = 31 * result + canonicalizationMethod.hashCode();
-        result = 31 * result + signatureMethod.hashCode();
-        result = 31 * result + references.hashCode();
+        if (canonicalizationMethod != null) {
+            result = 31 * result + canonicalizationMethod.hashCode();
+        }
+        if (signatureMethod != null) {
+            result = 31 * result + signatureMethod.hashCode();
+        }
+        if (references != null) {
+            result = 31 * result + references.hashCode();
+        }
         
         return result;
     }

@@ -25,14 +25,12 @@ import java.io.File;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
-
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.*;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.xml.security.utils.XMLUtils;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -153,7 +151,10 @@ public class XMLSignatureFactoryTest extends org.junit.Assert {
                  " for wrong inputs"); 
         }
 
-        DocumentBuilder docBuilder = XMLUtils.createDocumentBuilder(false, false);
+        DocumentBuilderFactory docFactory =
+            DocumentBuilderFactory.newInstance();
+        docFactory.setNamespaceAware(true);
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         String fs = System.getProperty("file.separator");
         String base = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
         File dir = new File(base + fs +

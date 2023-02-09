@@ -97,24 +97,20 @@ public final class DOMManifest extends DOMStructure implements Manifest {
         
         boolean secVal = Utils.secureValidation(context);
         
-        Element refElem = DOMUtils.getFirstChildElement(manElem, "Reference");
+        Element refElem = DOMUtils.getFirstChildElement(manElem);
         List<Reference> refs = new ArrayList<Reference>();
-        refs.add(new DOMReference(refElem, context, provider));
         
-        refElem = DOMUtils.getNextSiblingElement(refElem);
+        int refCount = 0;
         while (refElem != null) {
-            String localName = refElem.getLocalName();
-            if (!localName.equals("Reference")) {
-                throw new MarshalException("Invalid element name: " +
-                                           localName + ", expected Reference");
-            }
             refs.add(new DOMReference(refElem, context, provider));
-            if (secVal && (refs.size() > DOMSignedInfo.MAXIMUM_REFERENCE_COUNT)) {
+            refElem = DOMUtils.getNextSiblingElement(refElem);
+            
+            refCount++;
+            if (secVal && (refCount > DOMSignedInfo.MAXIMUM_REFERENCE_COUNT)) {
                 String error = "A maxiumum of " + DOMSignedInfo.MAXIMUM_REFERENCE_COUNT + " " 
                     + "references per Manifest are allowed with secure validation";
                 throw new MarshalException(error);
             }
-            refElem = DOMUtils.getNextSiblingElement(refElem);
         }
         this.references = Collections.unmodifiableList(refs);
     }
@@ -166,7 +162,9 @@ public final class DOMManifest extends DOMStructure implements Manifest {
         if (id != null) {
             result = 31 * result + id.hashCode();
         }
-        result = 31 * result + references.hashCode();
+        if (references != null) {
+            result = 31 * result + references.hashCode();
+        }
         
         return result;
     }

@@ -138,15 +138,12 @@ public class TransformXSLT extends TransformSpi {
                 ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
                 StreamResult outputTarget = new StreamResult(baos1);
                 transformer.transform(xmlSource, outputTarget);
-                XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
-                output.setSecureValidation(secureValidation);
-                return output;
+                return new XMLSignatureInput(baos1.toByteArray());
             }
             StreamResult outputTarget = new StreamResult(baos);
 
             transformer.transform(xmlSource, outputTarget);         
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
-            output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);
             return output;
         } catch (XMLSecurityException ex) {

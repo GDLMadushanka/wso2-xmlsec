@@ -27,11 +27,9 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.*;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
-
 import java.security.*;
 import java.util.*;
-
-import org.apache.xml.security.utils.XMLUtils;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 /**
@@ -133,7 +131,10 @@ public class DetachedTest extends org.junit.Assert {
     
             // Create an XMLSignContext and set the 
             // DSA PrivateKey for signing
-            Document doc = XMLUtils.createDocumentBuilder(false).newDocument();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            dbf.setValidating(false);
+            Document doc = dbf.newDocumentBuilder().newDocument();
             DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 
